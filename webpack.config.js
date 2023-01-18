@@ -5,7 +5,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
 module.exports = {
-  entry: ['./src/index.js', ],
+  entry: ['./src/index.ts', ],
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+  },
   output: {
         path: path.join(__dirname, 'dist'),
         filename: 'index.[contenthash:8].js',
@@ -13,6 +16,11 @@ module.exports = {
       },
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
       {
         test:/\.pug$/,
         loader: 'pug-loader',
