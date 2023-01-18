@@ -3,11 +3,12 @@ const path = require('path');
 const FileManagerPlugin = require('filemanager-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
   entry: ['./src/index.ts', ],
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],
   },
   output: {
         path: path.join(__dirname, 'dist'),
@@ -17,7 +18,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.(ts|tsx)$/i,
         use: 'ts-loader',
         exclude: /node_modules/,
       },
@@ -43,6 +44,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new ESLintPlugin({ extensions: ['ts', 'js'] }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src', 'template.html'),
       filename: 'index.html',
@@ -57,6 +59,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
     }),
+    
   ],devServer: {
          watchFiles: path.join(__dirname, 'src'),
          port: 9000,
